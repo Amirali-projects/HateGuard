@@ -1,0 +1,70 @@
+# ==========================================
+# 📦 DEPENDENCIES & PACKAGES
+# ==========================================
+**/node_modules/
+
+# Ignore lockfiles if you want to strictly rely on package.json for fresh local installs
+**/package-lock.json
+**/yarn.lock
+**/pnpm-lock.yaml
+
+# ==========================================
+# 🔐 SECRETS & ENVIRONMENT VARIABLES
+# ==========================================
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.production.local
+**/.env.test.local
+
+# ==========================================
+# 🚀 BUILDS & OUTPUTS
+# ==========================================
+**/dist/
+**/build/
+**/.next/
+**/.nuxt/
+**/.out/
+
+# ==========================================
+# 🛠️ IDE & EDITOR CONFIGURATIONS
+# ==========================================
+# VS Code files
+.vscode/
+!.vscode/extensions.json
+
+# WebStorm / IntelliJ files
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ==========================================
+# 📋 SYSTEM LOGS & DIAGNOSTICS
+# ==========================================
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ==========================================
+# 🧪 TESTING COVERAGE
+# ==========================================
+**/coverage/
+**/.nyc_output/
