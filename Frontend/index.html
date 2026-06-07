@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hate Speech Detection System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              yellow: { DEFAULT: '#ffd60a', dim: '#c9a800' },
+              card:    '#111111',
+              elevated:'#181818',
+              border:  '#1f1f1f',
+              borderb: '#2a2a2a',
+              danger:  '#ff4d4d',
+              safe:    '#39d353',
+            },
+            fontFamily: {
+              display: ['"Bebas Neue"', 'sans-serif'],
+              body:    ['"DM Sans"',    'sans-serif'],
+              mono:    ['"JetBrains Mono"', 'monospace'],
+            },
+          },
+        },
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+      body { background-color: #0a0a0a; }
+
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes barGrow {
+        from { width: 0%; }
+        to   { width: var(--bar-width); }
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      @keyframes pulse-dot {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.3; }
+      }
+
+      .animate-fade-up   { animation: fadeUp 0.5s ease forwards; }
+      .animate-fade-up-1 { animation: fadeUp 0.5s ease 0.1s both; }
+      .animate-fade-up-2 { animation: fadeUp 0.5s ease 0.2s both; }
+      .animate-fade-up-3 { animation: fadeUp 0.5s ease 0.3s both; }
+      .animate-fade-up-4 { animation: fadeUp 0.5s ease 0.4s both; }
+      .animate-fade-up-5 { animation: fadeUp 0.5s ease 0.5s both; }
+      .animate-bar       { animation: barGrow 0.8s cubic-bezier(0.4,0,0.2,1) forwards; }
+      .animate-spin-btn  { animation: spin 0.7s linear infinite; }
+      .animate-pulse-dot { animation: pulse-dot 2s ease infinite; }
+
+      /* Grid texture */
+      .bg-grid {
+        background-image:
+          linear-gradient(rgba(255,214,10,0.015) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,214,10,0.015) 1px, transparent 1px);
+        background-size: 48px 48px;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #0a0a0a; }
+      ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #c9a800; }
+
+      /* Textarea caret */
+      textarea { caret-color: #ffd60a; }
+
+      /* Bar animation helper */
+      .bar-fill { animation: barGrow 0.8s cubic-bezier(0.4,0,0.2,1) forwards; }
+    </style>
+  </head>
+  <body class="mix-h-screen text-gray-100 font-body">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
