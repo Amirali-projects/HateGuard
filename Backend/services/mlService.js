@@ -1,43 +1,59 @@
-const axios = require('axios');
-const ML_URL = process.env.FLASK_ML_URL || 'http://localhost:5002/predict';
+const axios = require("axios");
+
+const ML_URL = process.env.FLASK_ML_URL || "http://localhost:5001/predict";
 
 const analyzeText = async (text) => {
     try {
-        const response = await axios.post(ML_URL, { text }, { timeout: 4000 });
+        const { data } = await axios.post(
+            ML_URL,
+            { text },
+            {
+                timeout: 5000,
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        );
 
-        if (!response.data) {
-            throw new Error("Empty ML response data payload");
+        if (!data) {
+            throw new Error("No response received from ML server.");
         }
 
-        // Extract raw scores from your Flask application
-        let rawConfidence = response.data.confidence || 0.0;
-        let category = response.data.category || 'Clean';
-        let isHateFlag = response.data.is_hate || false;
+        const label = (data.label || "NON-HATE").toUpperCase();
+        const confidence = Number(data.confidence) || 0;
 
-        // FIX: If Flask sends confidence as a percentage (e.g., 77.11), convert it down to a decimal (0.7711)
-        if (rawConfidence > 1.0) {
-            rawConfidence = rawConfidence / 100;
-        }
+        const is_hate = label === "HATE";
 
-        // FIX: Safety check. If the model explicitly says "Neutral" or "Clean", it is NOT hate speech
-        if (category === 'Neutral' || category === 'Clean') {
-            isHateFlag = false;
-        }
+        // Convert new model output to old frontend format
+        const category = is_hate ? "Hate Speech" : "Clean";
 
         return {
-            is_hate: isHateFlag,
-            confidence: rawConfidence, // Will now accurately be between 0.0 and 1.0
-            category: category
+            is_hate,
+            label,
+            category,
+            confidence
         };
 
-    } catch (err) {
-        console.error("🚨 [mlService Error]:", err.message);
+    } catch (error) {
+
+        console.error("🚨 ML Service Error:");
+
+        if (error.response) {
+            console.error("Status:", error.response.status);
+            console.error("Data:", error.response.data);
+        } else {
+            console.error(error.message);
+        }
+
         return {
             is_hate: false,
-            confidence: 0.0,
-            category: 'Clean'
+            label: "NON-HATE",
+            category: "Clean",
+            confidence: 0
         };
     }
 };
 
-module.exports = { analyzeText };
+module.exports = {
+    analyzeText
+};

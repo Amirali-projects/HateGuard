@@ -1,8 +1,9 @@
-const { Client, GatewayIntentBits } = require('discord.js');
-const Log = require('../models/Log');
-const { analyzeText } = require('../services/mlService');
+const { Client, GatewayIntentBits } = require("discord.js");
+const Log = require("../models/Log");
+const { analyzeText } = require("../services/mlService");
 
 const startBot = () => {
+
     const client = new Client({
         intents: [
             GatewayIntentBits.Guilds,
@@ -11,35 +12,43 @@ const startBot = () => {
         ]
     });
 
-    client.on('ready', () => {
-        console.log(`🤖 HateGuard Bot is successfully online as ${client.user.tag}`);
+    client.once("ready", () => {
+        console.log(`🤖 HateGuard Bot is Online as ${client.user.tag}`);
     });
 
-    client.on('messageCreate', async (message) => {
-        // Prevent the bot from scanning its own messages or other bots
+    client.on("messageCreate", async (message) => {
+
+        // Ignore bots
         if (message.author.bot) return;
 
         try {
-            // Get evaluation from your machine learning service layer
-            const result = await analyzeText(message.content);
-            const { is_hate, confidence, category } = result;
 
-            // Strict Filter: Only moderate if flagged by model/threshold AND it's not a Clean/Neutral classification
-            if ((is_hate || confidence > 0.50) && category !== 'Neutral' && category !== 'Clean') {
-                
-                // 🚫 IMMEDIATE ENFORCEMENT: Delete the message on the very first occurrence
+            const result = await analyzeText(message.content);
+
+            const {
+                is_hate,
+                confidence,
+                category
+            } = result;
+
+            console.log("Prediction:", result);
+
+            // Moderate only hate messages
+            if (is_hate && confidence >= 0.70) {
+
+                // Delete message
                 try {
                     await message.delete();
-                } catch (delErr) {
-                    console.error("Could not delete message. Check Bot Role Hierarchy position:", delErr.message);
+                } catch (err) {
+                    console.error("❌ Unable to delete message:", err.message);
                 }
 
-                // Notify the channel that the violation was instantly removed
-                const alertWarning = await message.channel.send(
-                    `🚫 **Message Removed ${message.author}:** Your message was removed by **HateGuard** for violating speech guidelines [Reason: ${category} | Confidence: ${(confidence * 100).toFixed(1)}%].`
+                // Send warning
+                const warning = await message.channel.send(
+                    `🚫 ${message.author}, your message has been removed because it was detected as **${category}**.\n\nConfidence: **${(confidence * 100).toFixed(2)}%**`
                 );
 
-                // Commit the incident row straight to MongoDB for your dashboard tracking
+                // Save exactly what the frontend expects
                 await Log.create({
                     username: message.author.tag,
                     content: message.content,
@@ -47,15 +56,28 @@ const startBot = () => {
                     category: category
                 });
 
-                // Self-delete the bot's public warning notification after 7 seconds to keep chat clean
-                setTimeout(() => alertWarning.delete().catch(() => {}), 7000);
-                
-                console.log(`🛑 Immediate infraction handled. Message purged and logged for user: ${message.author.tag}`);
+                console.log(
+                    `🚨 ${category} Detected | User: ${message.author.tag} | Confidence: ${(confidence * 100).toFixed(2)}%`
+                );
+
+                // Remove warning after 7 seconds
+                setTimeout(async () => {
+                    try {
+                        await warning.delete();
+                    } catch (_) {}
+                }, 7000);
+
+            } else {
+
+                console.log(
+                    `✅ Clean Message | ${message.author.tag} | Confidence: ${(confidence * 100).toFixed(2)}%`
+                );
             }
 
-        } catch (err) {
-            console.error("❌ HateGuard Core Logic Error:", err.message);
+        } catch (error) {
+            console.error("🚨 Bot Error:", error.message);
         }
+
     });
 
     client.login(process.env.DISCORD_TOKEN);

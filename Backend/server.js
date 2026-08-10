@@ -11,9 +11,7 @@ const startBot = require('./bot/bot');
 
 const app = express();
 
-// ==========================================
 // 🛡️ CRITICAL GLOBAL PROCESS SAFEGUARDS
-// ==========================================
 // Catches unhandled promise rejections (like Gemini/Discord API network drops)
 process.on('unhandledRejection', (reason, promise) => {
     console.error('⚠️ Critical Unhandled Rejection detected:', reason.stack || reason);
@@ -29,18 +27,15 @@ process.on('uncaughtException', (error) => {
     }
 });
 
-// ==========================================
+
 // ⚙️ MIDDLEWARE CONFIGURATION
-// ==========================================
 app.use(cors({
     origin: process.env.CLIENT_URL || 'http://localhost:5173', // Restricts CORS to frontend domain
     credentials: true
 }));
 app.use(express.json({ limit: '10kb' })); // Safety restriction against payload flood overhead
 
-// ==========================================
 // 🛣️ API ROUTES
-// ==========================================
 app.use('/api/logs', require('./routes/logRoutes'));
 
 // Health Check Endpoint (Crucial for Cloud Platforms like Render/Vercel to monitor app status)
@@ -54,9 +49,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Internal Server Error' });
 });
 
-// ==========================================
 // 🚀 BOOTSTRAP SYSTEM (Sequential & Secure)
-// ==========================================
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
@@ -84,3 +77,5 @@ const startServer = async () => {
 
 // Execute initialization pipeline
 startServer();
+
+

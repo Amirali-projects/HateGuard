@@ -1,52 +1,191 @@
-# ==========================================
-# 📦 DEPENDENCIES & PACKAGES
-# ==========================================
+# ============================================================
+# 🚀 FULL-STACK PROJECT .gitignore
+# Node.js + React + Python + PyTorch
+# ============================================================
+
+
+# ============================================================
+# 📦 NODE.JS / JAVASCRIPT DEPENDENCIES
+# ============================================================
+
 **/node_modules/
+node_modules/
 
-# Ignore lockfiles if you want to strictly rely on package.json for fresh local installs
-**/package-lock.json
-**/yarn.lock
-**/pnpm-lock.yaml
+# Package manager caches
+.npm/
+.yarn/
+.pnpm-store/
 
-# ==========================================
-# 🔐 SECRETS & ENVIRONMENT VARIABLES
-# ==========================================
+# NOTE:
+# Keep package-lock.json / yarn.lock / pnpm-lock.yaml tracked.
+# They ensure reproducible dependency installations.
+
+
+# ============================================================
+# 🔐 ENVIRONMENT VARIABLES & SECRETS
+# ============================================================
+
+.env
+.env.*
 **/.env
-**/.env.local
-**/.env.development.local
-**/.env.production.local
-**/.env.test.local
+**/.env.*
 
-# ==========================================
-# 🚀 BUILDS & OUTPUTS
-# ==========================================
+# Allow example environment files
+!.env.example
+!.env.sample
+**/.env.example
+**/.env.sample
+
+# Certificates / private keys
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Local secrets / credentials
+secrets/
+**/secrets/
+credentials/
+**/credentials/
+
+# Service account files
+service-account*.json
+*service-account*.json
+
+
+# ============================================================
+# 🐍 PYTHON
+# ============================================================
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Python virtual environments
+venv/
+**/venv/
+.venv/
+**/.venv/
+env/
+**/env/
+
+# Python packaging
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Python test/cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Coverage
+.coverage
+.coverage.*
+htmlcov/
+
+
+# ============================================================
+# 🤖 MACHINE LEARNING / MODEL ARTIFACTS
+# ============================================================
+
+# Temporary ML files
+**/checkpoints/
+**/runs/
+**/wandb/
+**/mlruns/
+
+# TensorBoard
+**/.tensorboard/
+
+# Common large model files
+*.h5
+*.hdf5
+*.onnx
+*.safetensors
+*.ckpt
+*.pth
+
+# PyTorch model files
+# Uncomment ONLY if you do NOT want to commit models:
+# *.pt
+
+# Scikit-learn model files
+# Uncomment ONLY if these are generated/trained locally:
+# *.pkl
+# *.joblib
+
+
+# ============================================================
+# 🧠 YOUR HATE SPEECH PROJECT
+# ============================================================
+
+# Python temporary files
+Backend/HateSpeechApp/__pycache__/
+
+# Virtual environment
+Backend/HateSpeechApp/venv/
+
+# If model files become large, consider Git LFS instead
+# rather than committing huge files directly.
+
+
+# ============================================================
+# 🚀 FRONTEND / BACKEND BUILD OUTPUT
+# ============================================================
+
 **/dist/
 **/build/
 **/.next/
 **/.nuxt/
 **/.out/
+**/.vite/
+**/.cache/
+**/.parcel-cache/
+**/.turbo/
 
-# ==========================================
-# 🛠️ IDE & EDITOR CONFIGURATIONS
-# ==========================================
-# VS Code files
-.vscode/
-!.vscode/extensions.json
+# React/Vite generated files
+**/coverage/
 
-# WebStorm / IntelliJ files
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
 
-# ==========================================
-# 📋 SYSTEM LOGS & DIAGNOSTICS
-# ==========================================
-# Logs
-logs
+# ============================================================
+# 🧪 TESTING
+# ============================================================
+
+**/coverage/
+**/.nyc_output/
+**/.pytest_cache/
+**/.tox/
+**/.nox/
+
+# Test results
+test-results/
+**/test-results/
+
+# Playwright
+playwright-report/
+blob-report/
+playwright/.cache/
+
+
+# ============================================================
+# 📋 LOGS & DEBUG FILES
+# ============================================================
+
+logs/
+**/logs/
 *.log
+*.log.*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -55,16 +194,147 @@ pnpm-debug.log*
 # Diagnostic reports
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-# OS specific files
+
+# ============================================================
+# 🛠️ IDE / EDITOR
+# ============================================================
+
+# VS Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# IntelliJ / WebStorm
+.idea/
+*.iml
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Cursor
+.cursor/
+
+
+# ============================================================
+# 💻 OPERATING SYSTEM
+# ============================================================
+
+# macOS
 .DS_Store
-.DS_Store?
+.AppleDouble
+.LSOverride
 ._*
+
+# Windows
 Thumbs.db
+Thumbs.db:encryptable
 ehthumbs.db
 Desktop.ini
 
-# ==========================================
-# 🧪 TESTING COVERAGE
-# ==========================================
-**/coverage/
-**/.nyc_output/
+# Linux
+*~
+.directory
+
+
+# ============================================================
+# 🗄️ DATABASE / LOCAL DATA
+# ============================================================
+
+# Local databases
+*.sqlite
+*.sqlite3
+*.db
+
+# MongoDB local files
+data/
+**/data/
+
+# Local database dumps
+dump/
+**/dump/
+
+# Database backups
+*.bak
+*.backup
+
+
+# ============================================================
+# ☁️ CLOUD / DEPLOYMENT
+# ============================================================
+
+# Vercel
+.vercel/
+
+# Netlify
+.netlify/
+
+# Firebase
+.firebase/
+
+# Serverless
+.serverless/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# IMPORTANT:
+# Do NOT ignore terraform.tfvars.example if you use one.
+!terraform.tfvars.example
+
+
+# ============================================================
+# 🔑 SSH / SECURITY
+# ============================================================
+
+# SSH private keys
+id_rsa
+id_rsa.pub
+id_dsa
+id_ecdsa
+id_ed25519
+
+# IMPORTANT:
+# Never commit private SSH keys.
+
+
+# ============================================================
+# 📁 TEMPORARY FILES
+# ============================================================
+
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+tmp/
+temp/
+**/tmp/
+**/temp/
+
+
+# ============================================================
+# 📦 ARCHIVES
+# ============================================================
+
+# Uncomment if you don't want archives in Git
+# *.zip
+# *.tar
+# *.tar.gz
+# *.rar
